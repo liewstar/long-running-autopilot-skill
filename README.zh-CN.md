@@ -3,29 +3,32 @@
 [![Validate Skill](https://github.com/liewstar/long-running-autopilot-skill/actions/workflows/validate-skill.yml/badge.svg)](https://github.com/liewstar/long-running-autopilot-skill/actions/workflows/validate-skill.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-A production-ready skill for **Codex CLI** and **Claude Code** that keeps AI agents moving in large tasks with minimal interruptions.
+一个面向 **Codex CLI** 与 **Claude Code** 的长任务执行技能，目标是：
 
-> 中文说明请看：[`README.zh-CN.md`](./README.zh-CN.md)
+- 持续推进，不被低价值提问频繁打断；
+- 只在真正阻塞或高风险操作时中断确认；
+- 用固定心跳格式汇报进展，支持会话中断后无缝续跑。
 
-## Why this skill
+> English README: [`README.md`](./README.md)
 
-When a task is large (multi-file refactor, broad migration, cross-module updates), frequent “confirm next step?” interruptions can hurt momentum.
+## 这个技能解决什么问题
 
-`long-running-autopilot` defines a strict operating contract:
+在大型任务（跨模块重构、批量改造、迁移项目）中，AI 常见问题是：
 
-- Keep executing in batches.
-- Heartbeat every 3-5 meaningful steps.
-- Ask only when truly blocked.
-- Force confirmation for high-risk actions.
+- 进度被“是否继续？”这类非必要提问打断；
+- 中断后难以快速恢复到上一个执行锚点；
+- 安全边界不清晰，可能在高风险动作上处理不一致。
 
-## Core capabilities
+`long-running-autopilot` 通过统一执行契约解决以上问题。
 
-- **Continuous execution:** no unnecessary pauses for low-risk choices.
-- **Interruption gate:** questions only for hard blockers.
-- **Safety-first risk policy:** explicit confirmation for destructive/irreversible actions.
-- **Resume-ready sessions:** every heartbeat carries a recovery anchor.
+## 核心能力
 
-## Repository structure
+- **连续批次执行**：默认持续推进。
+- **严格中断门禁**：仅硬阻塞才提问。
+- **高风险保护**：破坏性/不可逆操作必须显式确认。
+- **恢复锚点机制**：每次心跳包含恢复信息。
+
+## 仓库结构
 
 ```text
 .
@@ -41,7 +44,7 @@ When a task is large (multi-file refactor, broad migration, cross-module updates
 └── tools/validate_skill.py
 ```
 
-## Installation
+## 安装方式
 
 ### Codex CLI
 
@@ -57,58 +60,59 @@ mkdir -p ~/.claude/skills
 cp -R ./skill ~/.claude/skills/long-running-autopilot
 ```
 
-Then restart your CLI session.
+安装后重启 CLI 会话即可生效。
 
-## Usage
+## 使用示例
 
-### Chinese prompt
+### 中文调用
 
 ```text
 使用 $long-running-autopilot 持续执行这个大型任务，仅在硬阻塞或高风险操作时再中断询问。
 ```
 
-### English prompt
+### 英文调用
 
 ```text
 Use $long-running-autopilot to execute this large task continuously and only interrupt for hard blockers or high-risk actions.
 ```
 
-## Behavior contract (summary)
+## 行为契约（摘要）
 
-- **Batch cadence:** heartbeat every 3-5 meaningful steps.
-- **Defaulting policy:** low-risk ambiguities are assumed and logged, not queried.
-- **Blocker policy:** ask only when progress cannot continue safely.
-- **Risk policy:** always request explicit confirmation before destructive/irreversible operations.
+- **心跳节奏**：每 3-5 个关键步骤汇报一次。
+- **默认策略**：低风险不确定项采用默认值并记录，不打断提问。
+- **阻塞策略**：无法安全推进才提问。
+- **风险策略**：高风险动作一律先确认再执行。
 
-See details in:
+详细规则见：
 
 - [`skill/SKILL.md`](./skill/SKILL.md)
 - [`skill/references/decision-matrix.md`](./skill/references/decision-matrix.md)
 - [`skill/references/heartbeat-format.md`](./skill/references/heartbeat-format.md)
 - [`skill/references/resume-protocol.md`](./skill/references/resume-protocol.md)
 
-## Validation
+## 校验
 
-Run local checks:
+本地校验：
 
 ```bash
 python3 tools/validate_skill.py
 ```
 
-CI runs the same validation on push and pull request.
+CI 也会在 push / pull request 自动运行同一校验。
 
-## Contributing
+## 参与贡献
 
-Contributions are welcome. Please read:
+请先阅读：
 
 - [`CONTRIBUTING.md`](./CONTRIBUTING.md)
 - [`CODE_OF_CONDUCT.md`](./CODE_OF_CONDUCT.md)
 - [`SECURITY.md`](./SECURITY.md)
 
-## Changelog
+## 版本记录
 
-See [`CHANGELOG.md`](./CHANGELOG.md).
+请查看 [`CHANGELOG.md`](./CHANGELOG.md)。
 
 ## License
 
 MIT © Liao Xin
+

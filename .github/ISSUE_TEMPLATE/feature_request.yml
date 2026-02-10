@@ -1,0 +1,40 @@
+name: Feature request
+description: Suggest an improvement for the skill
+title: "[Feature] "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for your idea. Please describe the desired behavior clearly.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem statement
+      description: What pain point does this solve?
+      placeholder: In long-running tasks, ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: What should the skill do?
+      placeholder: Add/adjust rule ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Other approaches you considered.
+
+  - type: textarea
+    id: examples
+    attributes:
+      label: Example prompts or scenarios
+      description: Add concrete examples to make review easier.
+
