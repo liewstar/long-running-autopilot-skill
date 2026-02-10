@@ -1,0 +1,4 @@
+interface:
+  display_name: "Long-Running Autopilot"
+  short_description: "Sustain long tasks with minimal interruptions"
+  default_prompt: "使用 $long-running-autopilot 持续执行这个大型任务，仅在硬阻塞或高风险操作时再中断询问。"
